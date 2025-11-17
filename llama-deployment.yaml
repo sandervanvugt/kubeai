@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llama-server
+  namespace: default
+spec:
+  replicas: 8                  # one pod per GPU time-slice
+  selector:
+    matchLabels:
+      app: llama-server
+  template:
+    metadata:
+      labels:
+        app: llama-server
+    spec:
+      initContainers:
+      - name: download-model
+        image: curlimages/curl:8.7.1
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            set -e
+            MODEL_PATH=/models/mistral-7b-instruct.Q4_K_M.gguf
+            if [ -f "$MODEL_PATH" ]; then
+              echo "Model already present at $MODEL_PATH"
+            else
+              echo "Downloading model..."
+              curl -L -o "$MODEL_PATH" \
+                "https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.1-GGUF/resolve/main/mistral-7b-instruct-v0.1.Q4_K_M.gguf"
+              echo "Download complete."
+            fi
+        volumeMounts:
+        - name: models
+          mountPath: /models   # <-- maps to /opt/models on the node via PVC
+
+      containers:
+      - name: llama
+        image: ghcr.io/ggerganov/llama.cpp:full
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            ./server \
+              -m /models/mistral-7b-instruct.Q4_K_M.gguf \
+              -c 2048 \
+              --host 0.0.0.0 \
+              --port 8080
+        ports:
+        - containerPort: 8080
+          name: http
+        resources:
+          requests:
+            cpu: "2"
+            memory: "4Gi"
+            nvidia.com/gpu.shared: 1
+          limits:
+            cpu: "4"
+            memory: "8Gi"
+            nvidia.com/gpu.shared: 1
+        volumeMounts:
+        - name: models
+          mountPath: /models       # <-- pod path, backed by /opt/models on node
+
+      restartPolicy: Always
+
+      volumes:
+      - name: models
+        persistentVolumeClaim:
+          claimName: models-pvc    # <-- PV uses hostPath /opt/models
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: llama-service
+  namespace: default
+spec:
+  selector:
+    app: llama-server
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080
+  type: ClusterIP
+
