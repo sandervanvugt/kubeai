@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nvidia-device-plugin-config
+  namespace: nvidia-gpu-operator
+data:
+  any: |-
+    version: v1
+    sharing:
+      timeSlicing:
+        renameByDefault: true
+        resources:
+        - name: nvidia.com/gpu
+          replicas: 4
+
