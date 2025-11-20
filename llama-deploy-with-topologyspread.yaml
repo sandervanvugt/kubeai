@@ -4,7 +4,7 @@ metadata:
   name: llama-server
   namespace: default
 spec:
-  replicas: 2            # HPA can scale this up later
+  replicas: 2
   selector:
     matchLabels:
       app: llama-server
@@ -13,10 +13,16 @@ spec:
       labels:
         app: llama-server
     spec:
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app: llama-server
       containers:
       - name: llama
         image: ghcr.io/ggerganov/llama.cpp:server-cuda
-        # 'server' is the entrypoint; these are arguments to it
         args:
           - -m
           - /models/mistral-7b-instruct.Q4_K_M.gguf
@@ -46,7 +52,7 @@ spec:
       volumes:
       - name: models
         persistentVolumeClaim:
-          claimName: models-pvc
+          claimName: llama-models-pvc
 ---
 apiVersion: v1
 kind: Service

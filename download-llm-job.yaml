@@ -1,0 +1,35 @@
+# download-llm-job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: download-llm
+  namespace: default
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: downloader
+        image: curlimages/curl:8.7.1
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            set -e
+            MODEL_PATH=/models/mistral-7b-instruct.Q4_K_M.gguf
+            if [ -f "$MODEL_PATH" ]; then
+              echo "Model already present at $MODEL_PATH"
+            else
+              echo "Downloading model..."
+              curl -L -o "$MODEL_PATH" \
+                "https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.1-GGUF/resolve/main/mistral-7b-instruct-v0.1.Q4_K_M.gguf"
+              echo "Download complete."
+            fi
+        volumeMounts:
+        - name: models
+          mountPath: /models
+      volumes:
+      - name: models
+        persistentVolumeClaim:
+          claimName: models-pvc
+
