@@ -1,0 +1,52 @@
+apiVersion: ceph.rook.io/v1
+kind: CephCluster
+metadata:
+  name: rook-ceph
+  namespace: rook-ceph
+spec:
+  cephVersion:
+    # Use a Ceph version compatible with your Rook release; adjust if needed
+    image: quay.io/ceph/ceph:v18.2.2
+    allowUnsupported: false
+  dataDirHostPath: /var/lib/rook
+
+  # Single-node lab cluster
+  mon:
+    count: 1
+    allowMultiplePerNode: true
+
+  mgr:
+    count: 1
+
+  dashboard:
+    enabled: true
+    ssl: true
+
+  network:
+    # or remove this block to use the default (cluster) networking
+    provider: host
+
+  storage:
+    useAllNodes: false
+    useAllDevices: false
+    nodes:
+      - name: k-node-gpu-1.sillibot.fr
+        devices:
+          # Use the full /dev/disk/by-id path for stable device names
+          - name: /dev/disk/by-id/01000000000000058ce38ee3095e9103
+          - name: /dev/disk/by-id/01000000000000058ce38ee3095e9106
+          - name: /dev/disk/by-id/01000000000000058ce38ee3095e9107
+
+  crashCollector:
+    disable: false
+
+  monitoring:
+    enabled: false
+
+  placement:
+    all:
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
+
