@@ -1,0 +1,161 @@
+    1  sudo hostnamectl hostname kubeai.example.com
+    2  sudo reboot
+    3  sudo apt install nvidia-cuda-toolkit
+    4  sudo dnf install openssh-server
+    5  sudo apt install openssh-server
+    6  ip a
+    7  lspci -k | less
+    8  sudo apt install git vim -y
+    9  git clone https://github.com/sandervanvugt/cka
+   10  cd cka
+   11  ls *sh
+   12  ./setup-container.sh 
+   13  sudo apt install -y wget
+   14  sudo apt install -y curl
+   15  ping github.com
+   16  ./setup-container.sh 
+   17  systemctl status containerd
+   18  history
+   19  ./setup-kubetools.sh 
+   20  history
+   21  sudo kubeadm init
+   22  kubectl get all
+   23  kubectl get pods -n kube-system
+   24  cat setup-kubetools.sh 
+   25  kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+   26  kubectl get pods -n kube-system
+   27  source <(kubectl completion bash)
+   28  history
+   29  kubectl run testpod --image=nginx
+   30  kubectl get pods
+   31  kubectl describe pod testpod
+   32  kubectl edit node kubeai.example.com 
+   33  kubectl get pods
+   34  history
+   35  ./counter.sh 15
+   36  history
+   37  cat  /etc/hosts
+   38  hostname
+   39  sudo vim /etc/hosts
+   40  kubectl get all
+   41  kubectl edit node kubeai.example.com 
+   42  kubectl create deploy testdeploy --image=nginx --replicas=3
+   43  kubectl get all
+   44  kubectl scale deploy testdeploy --image=4
+   45  kubectl scale deploy testdeploy --replicas=4
+   46  kubectl delete pod/testpod
+   47  kubectl delete deployments.apps testdeploy 
+   48  history
+   49  kubectl get crd
+   50  kubectl api-resources
+   51  kubectl get crd
+   52  sudo apt install curl gpg apt-transport-https -y
+   53  sudo snap install helm --classic
+   54  helm --version
+   55  helm -h
+   56  history | less
+   57  helm version
+   58  sudo apt install -y ntop
+   59  sudo apt install -y nvtop
+   60  nvtop
+   61  helm repo add nvidia https://nvidia.github.io/gpu-operator
+   62  history
+   63  helm repo update
+   64  kubectl create ns nvidia-gpu-operator
+   65  cd 
+   66  git clone https://github.com/sandervanvugt/kubeai
+   67  cd kubeai/
+   68  ls
+   69  vim values.yaml 
+   70  helm upgrade --install gpu-operator nvidia/gpu-operator --namespace nvidia-gpu-operator -f values.yaml
+   71  kubectl -n nvidia-gpu-operator get pods
+   72  kubectl -n nvidia-gpu-operator get pods,ds,deploy
+   73  cat values.yaml 
+   74  history
+   75  kubectl -n nvidia-gpu-operator get pods
+   76  vim gpu-test.yaml 
+   77  kubectl apply -f gpu-test.yaml
+   78  kubectl get pods
+   79  kubectl describe pod gpu-test
+   80  sudo reboot
+   81  top
+   82  sudo crictl status
+   83  sudo crictl ps
+   84  source <(kubectl completion bash)
+   85  kubectl get pods -n nvidia-gpu-operator 
+   86  kubectl get deploy
+   87  kubectl get deploy -n nvidia-gpu-operator 
+   88  kubectl get ds -n nvidia-gpu-operator 
+   89  kubectl get pods
+   90  kubectl describe pods gpu-test
+   91  kubectl edit node kubeai.example.com 
+   92  cd kubeai/
+   93  ls
+   94  kubectl delete -f gpu-test.yaml 
+   95  vim gpu-test.yaml
+   96  kubectl apply -f gpu-test.yaml 
+   97  kubectl get pods
+   98  kubectl logs gpu-test 
+   99  history
+  100  vim gpu-test.yaml 
+  101  kubectl get pods -n nvidia-gpu-operator 
+  102  kubectl get node kubeai.example.com -o yaml | grep nvidia
+  103  kubectl get node kubeai.example.com -o yaml | less
+  104  kubectl get ds -n nvidia-gpu-operator 
+  105  kubectl get clusterpolicy
+  106  kubectl api-resource | grep clusterpo
+  107  kubectl api-resources | grep clusterpo
+  108  kubectl get clusterpolicies.nvidia.com -o yaml
+  109  ls
+  110  vim gpu-test.yaml 
+  111  kubectl explain pod.spec | less
+  112  vim gpu-test.yaml 
+  113  kubectl apply -f gpu-test.yaml 
+  114  vim gpu-test.yaml 
+  115  kubectl get pods
+  116  vim gpu-test.yaml 
+  117  kubectl apply -f gpu-test.yaml 
+  118  history
+  119  kubectl create mydb --image=mariadb --replicas=3
+  120  kubectl create deploy mydb --image=mariadb --replicas=3
+  121  kubectl get all --selector app=mydb
+  122  kubectl logs mydb-5fcf4f6fbb-bclj8 
+  123  kubectl create cm -h | less
+  124  #kubectl create configmap my-config --from-literal=key1=config1 --from-literal=key2=config2
+  125  kubectl create cm mydbcm --from-literal=MARIADB_ROOT_PASSWORD=password
+  126  kubectl get cm mydbcm -o yaml
+  127  kubectl set env -h | less
+  128  #kubectl set env --from=configmap/myconfigmap --prefix=MYSQL_ deployment/myapp
+  129  kubectl set env --from=configmap/mydbcm deploy/mydb
+  130  kubectl get all --selector app=mydb
+  131  history
+  132  ls
+  133  grep -i configm *
+  134  vim nvidia-device-plugin-config.yaml 
+  135  kubectl apply -f nvidia-device-plugin-config.yaml 
+  136  kubectl edit -n nvidia-gpu-operator clusterpolicies.nvidia.com 
+  137  kubectl describe node | grep nvidia.com/gpu
+  138  kubectl describe node | less
+  139  kubectl get pods
+  140  vim ls
+  141  ls
+  142  vim gpu-test.yaml 
+  143  kubectl apply -f gpu-test.yaml 
+  144  kubectl get pods
+  145  sudo nvtop
+  146  /usr/local/nvidia/toolkit/nvidia-container-cli info
+  147  history
+  148  mkdir -p /opt/models
+  149  sudo mkdir -p /opt/models
+  150  sudo chmod 777 /opt/models
+  151  cat models-pv-pvc.yaml 
+  152  kubectl apply -f models-pv-pvc.yaml
+  153  kubectl get pv,pvc
+  154  kubectl describe pvc models-pvc 
+  155  kubectl get pv,pvc
+  156  vim download-llm-job.yaml 
+  157  kubectl apply -f download-llm-job.yaml
+  158  kubectl get all
+  159  ls -l /opt/models/
+  160  history
+  161  history > /tmp/nov25.txt
