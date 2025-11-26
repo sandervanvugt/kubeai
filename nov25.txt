@@ -159,3 +159,167 @@
   159  ls -l /opt/models/
   160  history
   161  history > /tmp/nov25.txt
+  162  exit
+  163  sudo poweroff
+  164  kubectl get pv,pvc
+  165  cd kubeai/
+  166  git pull
+  167  cd ..
+  168  mv kubeai kubeai.old
+  169  git clone https://github.com/sandervanvugt/kubeai
+  170  cd kubeai
+  171  ls
+  172  vim download-llm-job.yaml 
+  173  ls -l /opt/models/
+  174  vim llama-deployment.yaml 
+  175  kubectl apply -f llama-deployment.yaml 
+  176  kubectl get deploy
+  177  ls
+  178  cat llama-server-test.sh 
+  179  ./llama-server-test.sh 
+  180  cat llama-server-test.sh 
+  181  cat llama-server-test-loop.sh 
+  182  ./llama-server-test-loop.sh 
+  183  vim llama-server-test-heavier.sh 
+  184  ./llama-server-test-heavier.sh 
+  185  helm repo list
+  186  helm repo update
+  187  helm upgrade --install metrics-server metrics-server/metrics-server --namespace kube-system --set-args="{--kubelet-insecure-tls,--kubelet-preferred-address-types=InternalIP}"
+  188  helm upgrade --install metrics-server metrics-server/metrics-server --namespace kube-system --set args="{--kubelet-insecure-tls,--kubelet-preferred-address-types=InternalIP}"
+  189  kubectl get deploy -n kube-system
+  190  kubectl edit deploy -n kube-system metrics-server
+  191  kubectl top nodes
+  192  kubectl top pods
+  193  vim llama-hpa.yaml 
+  194  kubectl get pods
+  195  kubectl get deploy
+  196  kubectl apply -f llama-hpa.yaml 
+  197  kubectl get deploy
+  198  kubectl get hpa
+  199  kubectl get deploy
+  200  ./llama-server-test-heavier.sh 
+  201  kubectl get hpa
+  202  kubectl get pods
+  203  source <(kubectl completion bash)
+  204  kubectl describe pod llama-server-78697996d4-lk8xh
+  205  kubectl logs llama-server-78697996d4-lk8xh
+  206  nvidia-smi
+  207  ls
+  208  kubectl delete -f llama-deployment.yaml 
+  209  vim llama-deployment.yaml 
+  210  kubectl apply -f llama-deployment.yaml 
+  211  kubect get hpa
+  212  kubectl get hpa
+  213  kubectl get pods
+  214  ./llama-server-test-heavier.sh 
+  215  kubectl describe node kubeai.example.com | egrep -A6 "Capacity|Allocatable
+"
+  216  kubectl describe node kubeai.example.com | egrep -A10 "Allocated resources"
+  217  kubectl get node kubeai.example.com --show-labels | less
+  218  kubectl get node kubeai.example.com -o yaml | less
+  219  grep -l 4070
+  220  grep -l 4070 *
+  221  vim gpu-test.yaml 
+  222  kubectl apply -f gpu-test.yaml 
+  223  kubectl get pods
+  224  kubectl describe  pod gpu-test4
+  225  ls
+  226  kubectl delete -f llama-deployment.yaml 
+  227  vim llama-deploy-with-topologyspread.yaml 
+  228  kubectl get nodes kubeai.example.com -o yaml | less
+  229  kubectl apply -f llama-deploy-with-topologyspread.yaml 
+  230  kubectl get all
+  231  kubectl describe pod llama-server-65474c5f66-d4pld 
+  232  kubectl get pvc
+  233  vim llama-deploy-with-topologyspread.yaml 
+  234  kubectl replace -f llama-deploy-with-topologyspread.yaml 
+  235  kubectl get all
+  236  history
+  237  grep PodDis *
+  238  kubectl get deploy
+  239* 
+  240  vim llama-deploy-with-topologyspread.yaml 
+  241  kubectl apply -f llama-deploy-with-topologyspread.yaml 
+  242  kubectl get deploy --show-labels
+  243  vim pdb.yaml
+  244  kubectl apply -f pdb.yaml
+  245  kubectl describe pdb llama-pdb 
+  246  kubectl drain --ignore-daemonsets kubeai.example.com 
+  247  kubectl drain --ignore-daemonsets --delete-emptydir-data kubeai.example.com 
+  248  kubectl uncordon kubeai.example.com 
+  249  ls /opt/models/
+  250  history
+  251  ../cka/counter.sh 15
+  252  history
+  253  kubectl get priorityclass
+  254  kubectl explain priorityclass
+  255  kubectl get priorityclass
+  256  vim prioclass.yaml
+  257  kubectl apply -f prioclass.yaml 
+  258  kubectl get priorityclasses.scheduling.k8s.io 
+  259  ls
+  260  vim llama-deploy-with-topologyspread.yaml 
+  261  kubectl apply -f llama-deploy-with-topologyspread.yaml 
+  262  kubectl get all
+  263  kubectl describe priorityclasses.scheduling.k8s.io gpu-llm-high 
+  264  kubectl describe deployments.apps llama-server | less
+  265  helm repo add rook-release https://charts.rook.io/release
+  266  helm repo update
+  267  help repo list
+  268  helm repo list
+  269  helm install rook-ceph rook-release/rook-ceph --namespace rook-ceph --create-namespace
+  270  kubectl -n rook-ceph get pods
+  271  lsblk
+  272  sudo xxd /dev/nvme1n1 | less 
+  273  sudo gdisk /dev/nvme1n1
+  274  ls -l /dev/disk
+  275  blkid
+  276  ls -l /dev/disk/by-id
+  277  lsblk
+  278  ls -l /dev/disk/by-id
+  279  ls
+  280  vim ceph-cluster.yaml 
+  281  kubectl apply -f ceph-cluster.yaml 
+  282  kubectl -n rook-ceph get cephcluster rook-ceph 
+  283  watch kubectl -n rook-ceph get cephcluster rook-ceph 
+  284  kubectl -n rook-ceph get cephcluster rook-ceph
+  285  kubectl -n rook-ceph get pods
+  286  kubectl -n rook-ceph get cephcluster rook-ceph
+  287  sudo dd if=/dev/zero of=/bigfile bs=1M count=1024
+  288  sudo dd if=/dev/zero of=/bigfile bs=1M count=10240
+  289  vim ceph-blockpool.yaml 
+  290  kubectl apply -f ceph-blockpool.yaml 
+  291  kubectl describe -n rook-ceph cephblockpool 
+  292  kubectl get -n rook-ceph cephblockpool 
+  293  vim rook-ceph-storageclass.yaml 
+  294  kubectl get sc
+  295  kubectl apply -f rook-ceph-storageclass.yaml 
+  296  kubectl path storageclass rook-ceph-block -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+  297  kubectl patch storageclass rook-ceph-block -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+  298  kubectl get sc -o yaml
+  299  kubectl get sc
+  300  vim ceph-test-pvc.yaml 
+  301  kubectl apply -f ceph-test-pvc.yaml 
+  302  kubectl get pvc
+  303  kubectl describe pvc ceph-test-pvc 
+  304  vim ceph-test-pod.yaml 
+  305  kubectl apply -f ceph-test-pod.yaml 
+  306  kubectl get pvc
+  307  kubectl get pods
+  308  vim download-llm-on-ceph.yaml 
+  309  grep llama-models-pvc *
+  310  vim llama-models-pvc.yaml 
+  311  kubectl kustomize https://github.com/nginxinc/nginx-gateway-fabric/config/crd/gateway-api/standard?ref=v2.2.1 | kubectl apply -f  -
+  312  helm install ngf oci://ghcr.io/nginxinc/charts/nginx-gateway-fabric --create-namespace -n nginx-gateway --set service.type=NodePort
+  313  kubectl get pods,svc -n nginx-gateway
+  314  kubectl get gc
+  315  kubectl edit svc -n nginx-gateway ngf-nginx-gateway-fabric 
+  316  kubectl create deploy nginxgw --image=nginx --replicas=3
+  317  kubectl expose deploy nginxgw --port=80
+  318  cd ../cka
+  319  vim http-routing.yaml 
+  320  kubectl apply -f http-routing.yaml 
+  321  sudo vim /etc/hosts
+  322  curl whatever.com:32080
+  323  history
+  324  history > /tmp/nov25.txt
