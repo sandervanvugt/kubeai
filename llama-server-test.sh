@@ -1,3 +1,4 @@
+
 kubectl run llama-cli --rm -it --image=curlimages/curl:8.7.1 --restart=Never -- \
   sh -c '
     curl -s -X POST http://llama-service:8080/completion \
