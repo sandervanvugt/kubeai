@@ -19,7 +19,11 @@ spec:
   hostnames:
   - "whatever.com"
   rules:
-  - backendRefs:
-    - name: nginxgw
-      port: 80
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: llama-service
+      port: 8080
 
