@@ -1,0 +1,308 @@
+    1  sudo -i
+    2  exit
+    3  cd kubeai/
+    4  cd ../kubernetes/
+    5  ./countdown 4
+    6  lspci -k | less
+    7  sudo apt install nvidia-cuda-toolkit
+    8  sudo apt install git vim -y
+    9  git clone https://github.com/sandervanvugt/kubeai
+   10  cd kubeai/
+   11  ls
+   12  cd ..
+   13  git clone https://github.com/sandervanvugt/kubernetes
+   14  cd kube
+   15  cd kubernetes/
+   16  ./countdown 16
+   17  cd
+   18  sudo apt install curl -y
+   19  history | grep git
+   20  cd kubeai/
+   21  ls
+   22  ./setup-container.sh 
+   23  ping 8.8.8.8
+   24  ping nu.nl
+   25  ./setup-container.sh 
+   26  sudo systemctl status containerd
+   27  cat /etc/os-release 
+   28  ./setup-kubetools.sh 
+   29  kubeadm 
+   30  id
+   31  sudo kubeadm init
+   32  mkdir -p $HOME/.kube
+   33  kubectl get all
+   34  history
+   35  kubectl get all
+   36  kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+   37  kubectl completion -h
+   38  kubectl completion bash > ~/.kube/completion.bash.inc
+   39  kubectl edit node kubeai 
+   40  kubectl create deploy test --image=nginx --replicas=3
+   41  kubectl get all
+   42  history
+   43  kubectl edit node kubeai 
+   44  kubectl get all -n kube-system
+   45  sudo snap install helm --classic
+   46  helm --version
+   47  helm version
+   48  nvidia-smi
+   49  helm repo add nvidia https://nvidia.github.io/gpu-operator
+   50  helm repo update
+   51  kubectl create ns nvidia-gpu-operator
+   52  vim values.yaml 
+   53  history | grep git
+   54  helm upgrade --isntall gpu-operator nvidia/gpu-operator --namespace nvidia-gpu-operator -f values.yaml
+   55  helm upgrade --install gpu-operator nvidia/gpu-operator --namespace nvidia-gpu-operator -f values.yaml
+   56  kubectl -n nvidia-gpu-operator get pods
+   57  vim gpu-test.yaml 
+   58  kubectl get nodes --show-labels
+   59  kubectl edit nodes 
+   60  vim gpu-test.yaml 
+   61  kubectl edit nodes 
+   62  vim gpu-test.yaml 
+   63  kubectl apply -f gpu-test.yaml
+   64  kubectl get pods
+   65  kubectl describe pod gpu-test3 
+   66  vim gpu-test.yaml 
+   67  kubectl delete -f gpu-test.yaml 
+   68  kubectl apply -f gpu-test.yaml 
+   69  kubectl get pods
+   70  kubectl describe pod gpu-test3 
+   71  kubectl logs gpu-test3 
+   72  vim gpu-test.yaml 
+   73  history
+   74  sudo apt install nvtop
+   75  nvtop
+   76  kubectl get crd
+   77  ls
+   78  vim nvidia-device-plugin-config.yaml 
+   79  kubectl api-resources | grep cluster
+   80  kubectl edit clusterpolicies.nvidia.com -n nvidia-gpu-operator 
+   81  kubectl describe node kubeai 
+   82  kubectl describe node kubeai | grep Allocat
+   83  kubectl describe node kubeai | grep -A2 Allocat
+   84  kubectl describe node kubeai | grep 'nvidia.com/gpu
+   85  '
+   86  history
+   87  kubectl apply -f nvidia-device-plugin-config.yaml 
+   88  kubectl edit clusterpolicies.nvidia.com -n nvidia-gpu-operator 
+   89  kubectl describe node kubeai | grep 'nvidia.com/gpu
+   90  '
+   91  history
+   92  /usr/local/nvidia/toolkit/nvidia-container-cli info
+   93  /usr/local/nvidia/toolkit/nvidia-container-cli 
+   94  /usr/local/nvidia/toolkit/nvidia-container-cli --help
+   95  /usr/local/nvidia/toolkit/nvidia-container-cli info
+   96  history > /tmp/feb26.txt
+   97  cd kubernetes/
+   98  ./countdown 5
+   99  ./countdown 2
+  100  ./countdown 12
+  101  ./countdown 5
+  102  ./countdown 13
+  103  ip a
+  104  sudo apt install openssh-server
+  105  sudo poweroff
+  106  sudo vim /etc/hosts
+  107  ping mubai
+  108  ping lubai
+  109  sudo vim /etc/hosts
+  110  ping lubeai
+  111  sudo kubeadm token create --print-join-token
+  112  sudo kubeadm token create --print-join-command
+  113  cat /etc/hosts
+  114  kubectl get nodes
+  115  kubectl get ns
+  116  kubectl get all -n nvidia-gpu-operator 
+  117  lsblk
+  118  sudo mkdir -o /opt/models
+  119  sudo mkdir -p /opt/models
+  120  chmod 777 /opt/models/
+  121  sudo chmod 777 /opt/models/
+  122  cd kubeai/
+  123  vim models-pv-pvc.yaml 
+  124  kubectl apply -f models-pv-pvc.yaml 
+  125  kubectl get pv pvc
+  126  kubectl get pv,pvc
+  127  vim download-llm-job.yaml 
+  128  kubectl apply -f download-llm-job.yaml 
+  129  kubectl get all
+  130  kubectl get pods -o wide
+  131  kubectl logs download-llm-h6dz4 
+  132  kubectl explain --recursive jobs.spec | less
+  133  kubectl delete -f download-llm-job.yaml 
+  134  vim download-llm-job.yaml 
+  135  kubectl apply -f download-llm-job.yaml 
+  136  vim download-llm-job.yaml 
+  137  kubectl explain --recursive jobs.spec | less
+  138  vim download-llm-job.yaml 
+  139  kubectl get nodes
+  140  vim download-llm-job.yaml 
+  141  kubectl apply -f download-llm-job.yaml 
+  142  vim download-llm-job.yaml 
+  143  kubectl apply -f download-llm-job.yaml 
+  144  kubectl get pods
+  145  kubectl get pods
+  146  kubectl describe pod download-llm-9kdb5 
+  147  kubectl apply -f download-llm-job.yaml 
+  148  vim download-llm-job.yaml 
+  149  kubectl get nodes kubeai -o yaml | less
+  150  vim download-llm-job.yaml 
+  151  kubectl apply -f download-llm-job.yaml 
+  152  kubectl apply -d download-llm-job.yaml 
+  153  kubectl delete -f download-llm-job.yaml 
+  154  kubectl apply -f download-llm-job.yaml 
+  155  kubectl get pods
+  156  kubectl get pods
+  157  ls /opt/models/
+  158  ls -l /opt/models/
+  159  ls -l /opt/models/
+  160  vim llama-deployment.yaml 
+  161  kubectl apply -f llama-deployment.yaml 
+  162  kubectl get deploy
+  163  kubectl get all
+  164  kubectl describe pod llama-server-7f45bfc68c-fmrrb 
+  165  vim llama-deployment.yaml 
+  166  kubectl apply -f llama-deployment.yaml 
+  167  kubectl get all
+  168  kubectl get all
+  169  kubectl get all
+  170  kubectl get pods -o wide
+  171  vim llama-deployment.yaml 
+  172  sudo nvtop
+  173  vim llama-deployment.yaml 
+  174  vim llama-deployment.yaml 
+  175  vim llama-server-test.sh 
+  176  kubectl get svc
+  177  kubectl describe svc llama-service 
+  178  ./llama-server-test.sh 
+  179  vim llama-server-test-heavier.sh 
+  180  ./llama-server-test-heavier.sh 
+  181  cd ../kubernetes/
+  182  ./countdown 12
+  183  history
+  184  vim download-llm-job.yaml 
+  185  cd ../kubeai/
+  186  git pull
+  187  vim download-llm-job.yaml 
+  188  vim llama-deployment.yaml 
+  189  kubectl describe node kubeai 
+  190  sudo apt install nfs-server -y
+  191  sudo apt install nfs-client
+  192  sudo mkdir /nfsexport
+  193  sud vim /etc/exports
+  194  sudo vim /etc/exports
+  195  sudo systemctl restart nfs-server
+  196  cat /etc/hosts
+  197  helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
+  198  helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --set nfs.server=kubeai --set nfs.path=/nfsexport
+  199  kubectl get pods
+  200  git pull
+  201  cd ..
+  202  rm -f kubeai
+  203  rm -rf kubeai
+  204  git clone https://github.com/sandervanvugt/kubeai
+  205  cd kubeai/
+  206  vim nfs-provisioner-pvc-test.yaml 
+  207  kubectl get sc
+  208  git pull
+  209  history
+  210  kubectl get pvc,pc
+  211  kubectl get pvc,pv
+  212  vim nfs-provisioner-pvc-test.yaml 
+  213  kubectl apply -f nfs-provisioner-pvc-test.yaml 
+  214  kubectl get pvc
+  215  vim download-llm-
+  216  vim download-llm-job.yaml 
+  217  kubectl delete -f download-llm-job.yaml 
+  218  kubectl get pvc
+  219  kubectl delete -f nfs-provisioner-pvc-test.yaml 
+  220  vim nfs-provisioner-pvc-test.yaml 
+  221  kubectl apply -f nfs-provisioner-pvc-test.yaml 
+  222  kubectl get pvc
+  223  vim download-llm-job.yaml 
+  224  kubectl apply -f download-llm-job.yaml 
+  225  kubectl get pods
+  226  kubectl exec -it download-llm-56bj9 -- ls -l /models
+  227  cd /nfsexport/
+  228  ls
+  229  ls -ld 
+  230  ls -l 
+  231  ls default-nfs-pvc-test-pvc-4a686ae3-b4be-4055-9e9f-27362d9e427b/
+  232  ls -l default-nfs-pvc-test-pvc-4a686ae3-b4be-4055-9e9f-27362d9e427b/
+  233  cd 
+  234  cd kubeai/
+  235  vim llama-deployment.yaml 
+  236  kubectl get pods
+  237  kubectl get deployments.apps 
+  238  kubectl delete deploy test llama-server 
+  239  kubectl apply -f llama-deployment.yaml 
+  240  vim llama-deployment.yaml 
+  241  kubectl apply -f llama-deployment.yaml 
+  242  kubectl get pods
+  243  kubectl get pods
+  244  kubectl get pods -o wide
+  245  history
+  246  kubectl get pods
+  247  kubectl get pods -o wide
+  248  top
+  249  kubectl get cm -n nvidia-gpu-operator 
+  250  kubectl get cm -n nvidia-gpu-operator nvidia-device-plugin-config -o yaml
+  251  kubectl describe node lubeai | less
+  252  kubectl get ds -n nvidia-gpu-operator 
+  253  helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
+  254  history
+  255  helm repo update
+  256  helm install metrics-server metrics-server/metrics-server --namespace kube-system --set-args"{--kubelet-insecure-tls,--kublet-preferred-address-types=InternalIP}"
+  257  helm install metrics-server metrics-server/metrics-server --namespace kube-system --set-args="{--kubelet-insecure-tls,--kublet-preferred-address-types=InternalIP}"
+  258  helm install metrics-server metrics-server/metrics-server --namespace kube-system --set args="{--kubelet-insecure-tls,--kublet-preferred-address-types=InternalIP}"
+  259  kubectl get deploy metrics-server -n kube-system
+  260  kubectl get pods -n kube-system
+  261  kubectl edit -n kube-system deploy metrics-server 
+  262  kubectl get pods -n kube-system
+  263  kubectl top pods
+  264  kubectl get pods -n kube-system
+  265  kubectl top pods
+  266  history
+  267  kubectl api-resources | grep hpa
+  268  kubectl api-resources |less
+  269  kubectl get all
+  270  kubectl describe node kubeai | less
+  271  kubectl describe node lubeai | less
+  272  kubectl get deploy
+  273  kubectl scale deploy llama-server --replicas=12
+  274  kubectl get all
+  275  nvtop
+  276  kubectl get pods
+  277  kubectl logs llama-server-64dc5b545c-98vgp 
+  278  kubectl scale deploy llama-server --replicas=8
+  279  nvtop
+  280  vim llama-deploy-with-topologyspread.yaml 
+  281  ./countdown 12
+  282  kubectl kustomize https://github.com/nginxinc/nginx-gateway-fabric/config/crd/gateway-api/standard?ref=2.4.1 | kubectl apply -f -
+  283  kubectl kustomize https://github.com/nginxinc/nginx-gateway-fabric/config/crd/gateway-api/standard?ref=v2.4.1 | kubectl apply -f -
+  284  helm install ngf oci://ghcr.io/nginxinc/charts/nginx-gateway-fabric --create-namespace -n nginx-gateway --set service.type=NodePort
+  285  kubectl get pods,svc -n nginx-gateway 
+  286  kubectl get gc
+  287  kubectl edit -n nginx-gateway svc ngf-nginx-gateway-fabric 
+  288  kubectl get all
+  289  cd ..
+  290  git clone https://github.com/sandervanvugt/cka
+  291  cd cka
+  292  vim http-routing.yaml 
+  293  kubectl get svc
+  294  vim http-routing.yaml 
+  295  kubectl apply -f http-routing.yaml 
+  296  sudo vim /etc/hosts
+  297  sudo vim /etc/hosts
+  298  kubectl get svc -n nginx-gateway 
+  299  curl whatever.com:32080
+  300  cd ../kubeai/
+  301  ls
+  302  vim llama-server-test.sh 
+  303  ./llama-server-test.sh 
+  304  vim llama-server-test.sh 
+  305  ./llama-server-test.sh 
+  306  vim llama-server-test.sh 
+  307  curl -s -X POST http://whatever.com:32080/completion       -H "Content-Type: application/json"       -d "{\"prompt\":\"Say hello from Kubernetes and mention GPUs.\",\"n_predict\":64}" |       sed "s/\\n/\n/g" | head -n 10
+  308  history > /tmp/feb26.txt

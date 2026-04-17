@@ -1,0 +1,48 @@
+apiVersion: ceph.rook.io/v1
+kind: CephCluster
+metadata:
+  name: rook-ceph
+  namespace: rook-ceph
+spec:
+  cephVersion:
+    image: quay.io/ceph/ceph:v18.2.2
+  dataDirHostPath: /var/lib/rook
+
+  mon:
+    count: 3
+    allowMultiplePerNode: false
+
+  mgr:
+    count: 2
+    allowMultiplePerNode: false
+
+  dashboard:
+    enabled: true
+
+  crashCollector:
+    disable: false
+
+  storage:
+    useAllNodes: false
+    useAllDevices: false
+    nodes:
+    - name: node1
+      deviceFilter: "^sdb$"
+    - name: node2
+      deviceFilter: "^sdb$"
+    - name: node3
+      deviceFilter: "^sdb$"
+
+  # Optional but recommended defaults
+  network:
+    provider: host
+
+  healthCheck:
+    daemonHealth:
+      mon:
+        disabled: false
+      osd:
+        disabled: false
+      status:
+        disabled: false
+

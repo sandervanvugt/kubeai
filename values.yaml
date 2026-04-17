@@ -1,0 +1,21 @@
+# values.yaml
+driver:
+  enabled: false               # don't manage kernel driver; keep host driver
+
+toolkit:
+  enabled: true                # install nvidia-container-toolkit DaemonSet
+  env:
+    - name: CONTAINERD_CONFIG
+      value: /etc/containerd/config.toml
+
+devicePlugin:
+  enabled: true
+
+dcgm:
+  enabled: true                # telemetry
+dcgmExporter:
+  enabled: true                # Prometheus metrics
+
+# For containerd setups, set the runtime class if you use one (optional)
+# runtimeClass:
+#   name: nvidia

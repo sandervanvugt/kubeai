@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: llama-chat
+spec:
+  restartPolicy: Never
+  containers:
+    - name: chat
+      image: ubuntu:22.04
+      stdin: true
+      tty: true
+      command:
+        - bash
+        - -c
+        - |
+          apt update >/dev/null 2>&1
+          apt install -y curl jq >/dev/null 2>&1
+
+          echo "Simple LLM Chat (type 'exit' to quit)"
+
+          while true; do
+            printf "\nYou: "
+            read PROMPT
+
+            if [ "$PROMPT" = "exit" ]; then
+              echo "Bye!"
+              exit 0
+            fi
+
+            RESPONSE=$(printf '%s' "{\"prompt\":\"User: $PROMPT\nAssistant:\",\"n_predict\":200}" | \
+              curl -s http://llama-service:8080/completion \
+                -H "Content-Type: application/json" \
+                --data-binary @-)
+
+            echo "$RESPONSE" | jq -r '.content' | sed 's/^/Assistant: /'
+          done

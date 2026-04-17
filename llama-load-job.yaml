@@ -1,0 +1,25 @@
+# llama-load-job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: llama-load
+spec:
+  parallelism: 4
+  completions: 4
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: client
+        image: curlimages/curl:8.7.1
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            echo "Starting load generator..."
+            for i in $(seq 1 60); do
+              curl -s -X POST http://llama-service:8080/completion \
+                -H 'Content-Type: application/json' \
+                -d "{\"prompt\":\"Workload test number $i on Kubernetes GPUs.\",\"n_predict\":128}" > /dev/null
+            done
+            echo "Client done."
+
