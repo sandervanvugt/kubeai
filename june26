@@ -1,0 +1,100 @@
+    1  exit
+    2  sudo apt install -y vim git
+    3  git clone https://github.com/sandervanvugt/kubeai
+    4  cd kubeai/
+    5  ./setup-container.sh 
+    6  ./setup-kubetools.sh 
+    7  kubeadm join 192.168.52.91:6443 --token 637rjd.jbtbxhsqdcsjzmrd         --discovery-token-ca-cert-hash sha256:2d1141398955d93d2c4be3a39e32d8262643d3229377bad4c608bd45fe570326 
+    8  sudo kubeadm join 192.168.52.91:6443 --token 637rjd.jbtbxhsqdcsjzmrd         --discovery-token-ca-cert-hash sha256:2d1141398955d93d2c4be3a39e32d8262643d3229377bad4c608bd45fe570326 
+    9  sudo kubeadm reset
+   10  sudo kubeadm init
+   11  mkdir -p $HOME/.kube
+   12  kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+   13  kubectl get nodes
+   14  kubectl edit node muela1 
+   15  sudo snap install helm --classic
+   16  kubectl get nodes
+   17  nvidia-smi
+   18  helm repo add nvidia https://nvidia.github.io/gpu-operator
+   19  helm repo update
+   20  kubectl create ns nvidia-gpu-operator
+   21  helm upgrade --install gpu-operator nvidia/gpu-operator --namespace nvidia-gpu-operator -f values.yaml 
+   22  kubectl -n nvidia-gpu-operator get pods
+   23  kubectl -n nvidia-gpu-operator get all
+   24  kubectl -n nvidia-gpu-operator get pods
+   25  kubectl get crd
+   26  kubectl api-resources | less
+   27  kubectl -n nvidia-gpu-operator get pods
+   28  sudo apt install nvidia-cuda-toolkit
+   29  kubectl -n nvidia-gpu-operator get pods
+   30  sudo reboot
+   31  sudo apt install openssh-server
+   32  ip a
+   33  kubectl -n nvidia-gpu-operator get pods
+   34  kubectl edit node muela1 
+   35  kubectl create deploy test --image=nginx
+   36  kubectl get all
+   37  kubectl describe pod test-cb8d6c66d-44svh 
+   38  kubectl describe node muela1 
+   39  sudo systemctl status containerd
+   40  sudo systemctl stop containerd
+   41  sudo systemctl status containerd
+   42  sudo systemctl start containerd
+   43  sudo journalctl -u containerd
+   44  sudo systemctl restart containerd
+   45  sudo systemctl restart -i
+   46  sudo systemctl reboot -i
+   47  uptime
+   48  sudo systemctl status containerd
+   49  sudo /usr/local/nvidia/toolkit/nvidia-container-cli info
+   50  # Only use this if journalctl logs show AppArmor/signal blocks preventing container start
+   51  sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+   52  sudo systemctl restart containerd
+   53  sudo systemctl status containerd
+   54  sudo journalctl -u containerd
+   55  # 1. Back up your old, failing configuration just in case
+   56  sudo mv /etc/containerd/config.toml /etc/containerd/config.toml.bak
+   57  # 2. Generate a fresh default configuration template (uses the correct version layout)
+   58  sudo containerd config default | sudo tee /etc/containerd/config.toml > /dev/null
+   59  # 3. Explicitly enable SystemdCgroup in the new config file
+   60  sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml
+   61  # 4. Restart containerd to apply the clean configuration
+   62  sudo systemctl daemon-reload
+   63  sudo systemctl restart containerd
+   64  sudo systemctl status containerd
+   65  kubectl get pods -n nvidia-gpu-operator 
+   66  cat /etc/os-release 
+   67  cd kubeai/
+   68  git pull
+   69  chmod +x containerd-fix.sh 
+   70  cat containerd-fix.sh 
+   71  sudo systemctl status containerd
+   72  kubectl get pods -n nvidia-gpu-operator 
+   73  kubectl edit node muela1 
+   74  cd ..
+   75  git clone https://github.com/sandervanvugt/genai
+   76  cd genai/
+   77  ls
+   78  cat gpu-test.yaml 
+   79  cd ../kubeai/
+   80  cat gpu-test
+   81  cat gpu-test.yaml 
+   82  kubectl apply -f gpu-test.yaml 
+   83  kubectl get pods
+   84  kubectl logs gpu-test3 
+   85  cd ..
+   86  cd kubeai/
+   87  ls
+   88  vim models-pv-pvc.yaml 
+   89  mkdir -p /opt/models
+   90  sudo mkdir -p /opt/models
+   91  sudo chmod 777 /opt/models
+   92  kubectl apply -f models-pv-pvc.yaml 
+   93  kubectl get pv,pvc
+   94  history
+   95  vim download-llm-job.yaml 
+   96  kubectl apply -f download-llm-job.yaml 
+   97  ls -l /opt/models/
+   98  ls -lh /opt/models/
+   99  ls -l /opt/models/
+  100  history > /tmp/june26
