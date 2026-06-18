@@ -98,3 +98,188 @@
    98  ls -lh /opt/models/
    99  ls -l /opt/models/
   100  history > /tmp/june26
+  101  ip a
+  102  sudo poweroff
+  103  nvtop
+  104  sudo apt install nvtop
+  105  nvtop
+  106  sudo systemctl status containerd
+  107  cat /etc/os-release 
+  108  cd kubeai/
+  109  vim setup-container.sh 
+  110  git pull
+  111  vim setup-container.sh 
+  112  exit
+  113  kubectl get all
+  114  kubectl get pv,pvc
+  115  kubectl get pods download-llm-7rbjc -o yaml | less
+  116  ls -l /opt/models
+  117  cd kubeai/
+  118  ls
+  119  vim llama-deploy-simplified.yaml 
+  120  kubectl apply -f llama-deploy-simplified.yaml 
+  121  kubectl rollout status deployment/llama-server
+  122  kubectl get all
+  123  kubectl describe pod llama-server-5dcbc86797-lwx7b 
+  124  pvs
+  125  kubectl get pvs
+  126  kubectl get pvc
+  127  vim llama-deploy-simplified.yaml 
+  128  kubectl apply -f llama-deploy-simplified.yaml 
+  129  kubectl get all
+  130  history
+  131  kubectl get all
+  132  kubectl describe pod llama-server-67cb9978dc-q76ft 
+  133  kubectl get all
+  134  sudo nvtop
+  135  kubectl scale deploy llama-server --replicas=2
+  136  sudo nvtop
+  137  kubectl get all
+  138  kubectl describe pod llama-server-67cb9978dc-6cp5p 
+  139  kubectl apply -f llama-deploy-simplified.yaml 
+  140  vim llama-deploy-simplified.yaml 
+  141  kubectl get nodes --show-labels | less
+  142  kubectl edit node muela1 
+  143  nvtop
+  144  kubectl get cm -n nvidia-gpu-operator 
+  145  ls
+  146  vim nvidia-device-plugin-config.yaml 
+  147  kubectl apply -f nvidia-device-plugin-config.yaml 
+  148  kubectl edit clusterpolicies.nvidia.com 
+  149  kubectl describe node muela1 | grep nvidia.com/gpu 
+  150  kubectl describe node muela1 | less
+  151  kubectl get all
+  152  kubectl delete pod llama-server-67cb9978dc-q76ft 
+  153  kubectl get all
+  154  kubectl describe pod llama-server-67cb9978dc-wcxv5 
+  155  kubectl describe node muela1 | less
+  156  vim llama-deploy-simplified.yaml 
+  157  kubectl apply -f llama-deploy-simplified.yaml 
+  158  kubectl get all
+  159  kubectl describe node muela1 | less
+  160  nvtop
+  161  kubectl scale deploy llama-server --replicas=2
+  162  kubectl get all
+  163  nvtop
+  164  kubectl scale deploy llama-server --replicas=6
+  165  kubectl get all
+  166  kubectl describe node muela1 | less
+  167  kubectl scale deploy llama-server --replicas=3
+  168  kubectl get all
+  169  kubectl describe node muela1 | less
+  170  nvtop
+  171  history
+  172  kubectl get nodes
+  173  kubectl describe node muela1 | less
+  174  ls
+  175  vim llama-deployment.yaml 
+  176  sudo apt install nfs-server -y
+  177  sudo apt install nfs-client
+  178  sudo mkdir /nfsexport
+  179  sudo vim /etc/exports
+  180  sudo systemctl restart nfs-server
+  181  showmount -e localhost
+  182  history
+  183  helm
+  184  helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
+  185  helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --set nfs.server=192.168.52.43 --set nfs.path=/nfsexport
+  186  kubectl get pods
+  187  kubectl get sc
+  188  sudo kubeadm --help | less
+  189  sudo kubeadm token --help | less
+  190  sudo kubeadm token generate --help | less
+  191  sudo kubeadm token create --print-join-command
+  192  kubectl get pods -o wide -n nvidia-gpu-operator 
+  193  kubectl get ds -n nvidia-gpu-operator 
+  194  kubectl get ndoes
+  195  kubectl get nodes
+  196  sleep 20
+  197  kubectl get nodes
+  198  kubectl get pods -o wide -n nvidia-gpu-operator 
+  199  kubectl get pv,pvc
+  200  vim nfs-provisioner-pvc-test.yaml 
+  201  kubectl apply -f nfs-provisioner-pvc-test.yaml 
+  202  kubectl get pv,pvc
+  203  vim nfs-provisioner-pvc-test.yaml 
+  204  ls
+  205  ls *pvc*
+  206  kubectl patch storageclass nfs-client -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+  207  kubectl get nodes
+  208  kubectl get deploy
+  209  kubectl get all --selector app=llama-server -o wide
+  210  kubectl scale deploy llama-server --replicas=4
+  211  kubectl get all --selector app=llama-server -o wide
+  212  kubectl describe pod llama-server-697dc5dc95-rs87t 
+  213  kubectl get pvc
+  214  ls -l /nfsexport/default-nfs-pvc-test-pvc-7b943eb1-a54a-4bc6-9427-b2f89da82cf7/
+  215  ls *job*
+  216  vim download-llm-job.yaml 
+  217  kubectl get jobs
+  218  kubectl delete jobs  download-llm 
+  219  kubectl apply -f  download-llm-job.yaml 
+  220  kubectl get pods
+  221  sleep 60
+  222  kubectl describe node muela3 | less
+  223  kubectl get pods
+  224  nvtop
+  225  kubectl describe -n nvidia-gpu-operator clusterpolicies.nvidia.com 
+  226  kubectl describe -n nvidia-gpu-operator cm nvidia-device-plugin-config 
+  227  kubectl get pods
+  228  ls -lh /nfsexport/default-nfs-pvc-test-pvc-7b943eb1-a54a-4bc6-9427-b2f89da82cf7/
+  229  kubectl logs llama-server-697dc5dc95-rs87t 
+  230  ls
+  231  vim llama-deploy-simplified.yaml 
+  232  kubectl get pvc
+  233  vim llama-deploy-simplified.yaml 
+  234  kubectl delete deployments.apps llama-server 
+  235  kubectl apply -f llama-deploy-simplified.yaml 
+  236  kubectl get all
+  237  kubectl get pods -o wide
+  238  kubectl scale deploy llama-server --replicas=5
+  239  kubectl get pods -o wide
+  240  vim llama-deploy-simplified.yaml 
+  241  kubectl describe node muela3
+  242  history
+  243  kubectl get all -n nvidia-gpu-operator 
+  244  kubectl get cm -n nvidia-gpu-operator 
+  245  vim nvidia-device-plugin-config.yaml 
+  246  kubectl describe node muela3 | less
+  247  vim nvidia-device-plugin-config.yaml 
+  248  echo NVIDIA-GeForce-RTX-4070 >> nvidia-device-plugin-config.yaml 
+  249  vim nvidia-device-plugin-config.yaml 
+  250  kubectl apply -f nvidia-device-plugin-config.yaml 
+  251  kubectl describe node muela3 | less
+  252  vim nvidia-device-plugin-config.yaml 
+  253  kubectl apply -f nvidia-device-plugin-config.yaml 
+  254  kubectl edit clusterpolicies.nvidia.com -n nvidia-gpu-operator 
+  255  kubectl describe node muela3 | less
+  256  ping muela3
+  257  ping 192.168.52.91
+  258  kubectl describe node muela3 | less
+  259  vim nvidia-device-plugin-config.yaml 
+  260  kubectl apply -f nvidia-device-plugin-config.yaml 
+  261  kubectl edit -n nvidia-gpu-operator clusterpolicies.nvidia.com 
+  262  kubectl describe node muela3 | less
+  263  ping 192.168.52.91
+  264  kubectl describe node muela3 | less
+  265  vim nvidia-device-plugin-config.yaml  
+  266  nano nvidia-device-plugin-config.yaml 
+  267  kubectl apply -f nvidia-device-plugin-config.yaml 
+  268  kubectl patch clusterpolicy cluster-policy   --type merge   -p '{"spec":{"devicePlugin":{"config":{"name":"nvidia-device-plugin-config","default":"default"}}}}'
+  269  kubectl label node muela3   nvidia.com/device-plugin.config=NVIDIA-GeForce-RTX-4070   --overwrite
+  270  #kubectl label node muela1 \
+  271  kubectl label node muela1   nvidia.com/device-plugin.config=NVIDIA-GeForce-RTX-5090   --overwrite
+  272  kubectl get ds
+  273  kubectl get ds -n nvidia-gpu-operator 
+  274  kubectl rollout restart daemonset nvidia-device-plugin-daemonset   -n nvidia-gpu-operator
+  275  kubectl get pods -n nvidia-gpu-operator | grep device-plugin
+  276  kubectl describe node <4070-node-name> | grep -A8 -E "Capacity|Allocatable|nvidia.com"
+  277  kubectl describe node <5090-node-name> | grep -A8 -E "Capacity|Allocatable|nvidia.com"
+  278  kubectl get all -n nvidia-gpu-operator | grep device-plugin
+  279  kubectl describe node muela3 | grep shared
+  280  history
+  281  kubectl describe -n nvidia-gpu-operator cm nvidia-device-plugin-config
+  282  kubectl describe node muela3 | grep shared
+  283  kubectl describe node muela1 | grep shared
+  284  history
+  285  history > /tmp/june26
