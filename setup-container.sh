@@ -57,6 +57,11 @@ TOML
 
 RUNC_VERSION=$(curl -s https://api.github.com/repos/opencontainers/runc/releases/latest | jq -r '.tag_name')
 
+if grep '26.04' /etc/os-release
+then
+	sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml
+fi
+
 wget https://github.com/opencontainers/runc/releases/download/${RUNC_VERSION}/runc.${PLATFORM}
 sudo install -m 755 runc.${PLATFORM} /usr/local/sbin/runc
 # Restart containerd
