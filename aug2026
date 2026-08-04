@@ -1,0 +1,361 @@
+    1  kubectl get pods -n nvidia-gpu-operator 
+    2  kubectl describe pod -n nvidia-gpu-operator   nvidia-operator-validator-5grbx
+    3  nvidia-ctk
+    4  sudo apt update
+    5  sudo apt install -y ca-certificates curl gnupg2
+    6  curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+    7  curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+    8  sudo apt update
+    9  sudo apt install -y nvidia-container-toolkit
+   10  exit
+   11  lscpu | less
+   12  free -m
+   13  lsblk
+   14  lspci -k | less
+   15  top
+   16  lspci -k | grep -i nvidia -A5
+   17  sudo apt install nvidia-cuda-toolkit
+   18  sudo apt install vim git curl -y
+   19  git clone https://github.com/sandervanvugt/kubeai
+   20  cd kubeai/
+   21  ls
+   22  history
+   23  ls *sh
+   24  ./setup-container.sh 
+   25  ./setup-kubetools.sh 
+   26  sudo kubeadm init
+   27  history
+   28  kubectl get all
+   29  kubectl apply -f https://docs.projectcalico.org/manifest/calico.yaml
+   30  ping nu.nl
+   31  kubectl apply -f https://docs.projectcalico.org/manifest/calico.yaml
+   32  kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+   33  history
+   34  kubectl get nodes
+   35  kubectl edit node mueal1
+   36  kubectl edit node muela1
+   37  kubectl create deploy --image=nginx --replicas=3
+   38  kubectl create deploy test --image=nginx --replicas=3
+   39  kubectl get all
+   40  kubectl get pods -o wide
+   41  history
+   42  sudo snap install helm --classic
+   43  helm version
+   44  nvidia-smi
+   45  sudo apt install -y nvtop
+   46  nvtop
+   47  helm repo add nvidia https://nvidia.github.io/gpu-operator
+   48  helm repo list
+   49  helm repo update
+   50  kubectl create ns nvidia-gpu-operator
+   51  vim values.yaml 
+   52  helm upgrade --install gpu-operator nvidia/gpu-operator --namespace nvidia-gpu-operator -f values.yaml
+   53  kubectl get pods -n nvidia-gpu-operator 
+   54  kubectl get crds
+   55  kubectl get pods -n nvidia-gpu-operator 
+   56  kubectl get ds -n nvidia-gpu-operator 
+   57  kubectl get pods -n nvidia-gpu-operator 
+   58  kubectl describe pod -n nvidia-gpu-operator nvidia-operator-validator-5grbx 
+   59  nvidia-ctk
+   60  kubectl get pods -n nvidia-gpu-operator 
+   61  sudo apt install nvidia-container-runtime
+   62  sudo apt install nvidia-container-toolkit
+   63  nvidia-ctk
+   64  kubectl get pods -n nvidia-gpu-operator 
+   65  kubectl delete pod -n nvidia-gpu-operator nvidia-operator-validator-5grbx 
+   66  sudo reboot
+   67  sudo apt install openssh-server
+   68  ping -c 2 muela3
+   69  ip a
+   70  sudo vim /etc/hosts
+   71  ping -c 2 muela3
+   72  exit
+   73  top
+   74  kubectl get pods -n nvidia-gpu-operator 
+   75  sudo apt install nfs-server -y
+   76  sudo apt install nfs-client
+   77  sudo mkdir /nfsexport
+   78  sudo sh -c 'echo "/nfsexport  *(rw,no_root_squash)" > /etc/exports'
+   79  cat /etc/exports
+   80  sudo systemctl restart nfs-server
+   81  ip a | less
+   82  sudo vim /etc/hosts
+   83  showmount -e localhost
+   84  ip a | less
+   85  showmount -e 192.168.29.43
+   86  ufw status
+   87  sudo ufw status
+   88  sudo apt install nfs-kernel-server
+   89  kubeadm join 192.168.52.43:6443 --token rzs8gz.ss7uu54cepypgdt1 	--discovery-token-ca-cert-hash sha256:94169bfcec4a619dd1900ae27f1eeec85ccf074ad9f3b6da5e0099903b2cf7f0 
+   90  sudo systemctl status nfs-kernel-server
+   91  showmount -e localhost
+   92  showmount -e muela2
+   93  sudo ufw status
+   94  showmount -e muela1
+   95  helm repo add  nfs-subdir-external-provisioner  https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
+   96  helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --set nfs.server=192.168.52.43 --set nfs.path=/nfsexport
+   97  kubectl get pods
+   98  kubectl describe pod nfs-subdir-external-provisioner-7cd6c6f565-zcdnc 
+   99  kubectl edit node muela1
+  100  kubectl edit node muela3
+  101  kubectl get nodes
+  102  kubectl describe node muela1
+  103  sudo systemctl status containerd
+  104  sudo cat /etc/containerd/config.toml
+  105  sudo ls /etc/containerd/conf.d/
+  106  sudo rm -f /etc/containerd/conf.d/99-nvidia.toml 
+  107  sudo systemctl restart containerd
+  108  sudo systemctl status containerd
+  109  kubectl get nodes
+  110  kubectl get pods
+  111  kubectl get pv
+  112  cd kubeai/
+  113  cat nfs-provisioner-pvc-test.yaml 
+  114  kubectl get sc
+  115  kubectl apply -f nfs-provisioner-pvc-test.yaml 
+  116  kubectl get pvc,pv
+  117  kubectl delete -f nfs-provisioner-pvc-test.yaml 
+  118  ls *pvc*
+  119  cat llama-models-pvc.yaml 
+  120  kubectl get sc
+  121  kubectl patch storageclass nfs-client -p '{"metadate";{"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+  122  kubectl patch storageclass nfs-client -p '{"metadata";{"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+  123  kubectl patch storageclass nfs-client -p '{"metadata":{"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+  124  kubectl edit sc nfs-client 
+  125  vim llama-models-pvc.yaml 
+  126  kubectl get pv
+  127  kubectl apply -f llama-models-pvc.yaml 
+  128  kubectl get pvc,pv
+  129  ls *job*
+  130  cat download-llm-job.yaml 
+  131  vim download-llm-job.yaml 
+  132  kubectl get pvc
+  133  vim download-llm-job.yaml 
+  134  kubectl apply -f download-llm-job.yaml 
+  135  kubectl get jobs,pods
+  136  sudo ls -lh /nfsexport/default-llama-models-pvc-pvc-03261291-bfb3-45b7-a663-4b74c4f5964b/
+  137  ls *jobs*
+  138  ls *job*
+  139  vim llama-load-job.yaml 
+  140  kubectl get all -n nvidia-gpu-operator 
+  141  kubectl get pods -n nvidia-gpu-operator 
+  142  sudo apt install nvidia-container-toolkit-base
+  143  sudo apt remove nvidia-container-toolkit
+  144  exit
+  145  sudo apt install nvidia-container-toolkit
+  146  sudo systemctl status containerd
+  147  kubectl get all -n nvidia-gpu-operator 
+  148  kubectl get pods -n nvidia-gpu-operator 
+  149  kubectl describe -n nvidia-gpu-operator pods nvidia-operator-validator-cd7v8 
+  150  sudo ls -l /etc/containerd/conf.d
+  151  sudo apt remove nvidia-container-tookit nvidia-container-toolkit-base
+  152  sudo apt remove nvidia-container-toolkit nvidia-container-toolkit-base
+  153  sudo apt install nvidia-container-toolkit nvidia-container-toolkit-base -y
+  154  sudo nvidia-ctk runtime configure     --runtime=containerd     --config=/etc/containerd/config.toml
+  155  sudo systemctl restart containerd
+  156  sudo systemctl status containerd
+  157  kubectl get pods -n nvidia-gpu-operator 
+  158  sudo poweroff
+  159  sudo systemctl status containerd
+  160  sudo cat /etc/containerd/config.toml
+  161  kubectl get pods -n nvidia-gpu-operator 
+  162  sudo reboot
+  163  kubectl get pods -n nvidia-gpu-operator 
+  164  kubectl describe pod -n nvidia-gpu-operator nvidia-operator-validator-cd7v8 
+  165  sudo -i
+  166  sudo systemctl restart containerd
+  167  sudo systemctl status containerd
+  168  kubectl get pods -n nvidia-gpu-operator 
+  169  sudo nvidia-ctk runtime configure --runtime=containerd --config=/etc/containerdd/config.toml
+  170  sudo systemctl restart containerd
+  171  sudo systemctl status containerd
+  172  kubectl get pods -n nvidia-gpu-operator 
+  173  history
+  174  cd kubeai/
+  175  vim gpu-test.yaml 
+  176  vim ~/.vimrc
+  177  vim gpu-test.yaml 
+  178  kubectl explain pods.spec.containers.resources.limits
+  179  vim gpu-test.yaml 
+  180  kubectl describe node muela1 | less
+  181  kubectl apply -f gpu-test.yaml 
+  182  kubectl get pods
+  183  kubectl logs gpu-test3 
+  184  history
+  185  kubectl get ds
+  186  kubectl get ds -A
+  187  kubectl get clusterpolicy -A
+  188  kubectl describe clusterpolicies.nvidia.com cluster-policy 
+  189  kubectl describe clusterpolicies.nvidia.com cluster-policy  | less
+  190  kubectl get crds
+  191  ls
+  192  vim gpu-test-4070.yaml 
+  193  kubectl apply -f gpu-test-4070.yaml 
+  194  kubectl get pods
+  195  kubectl describe pod gpu-test4 
+  196  kubectl get pods -o wide
+  197  kubectl describe node muela3 | less
+  198  history
+  199  kubectl get pods
+  200  kubectl delete pod gpu-test3
+  201  kubectl get pods
+  202  kubectl delete pod gpu-test4
+  203  vim nvidia-device-plugin-config.yaml 
+  204  kubectl apply -f nvidia-device-plugin-config.yaml 
+  205  kubectl edit clusterpolicies.nvidia.com -n nvidia-gpu-operator 
+  206  kubectl describe node | grep nvidia.com/gpu
+  207  kubectl describe node | grep Allocatable -A10
+  208  ls
+  209  kubectl apply -f gpu-test-4070.yaml 
+  210  sleep 20; kubectl get pods
+  211  vim gpu-test-4070.yaml 
+  212  kubectl describe node | grep Allocatable -A10
+  213  kubectl delete pod gpu-test4
+  214  vim gpu-test-4070.yaml 
+  215  kubectl apply -f gpu-test-4070.yaml 
+  216  kubectl get pods
+  217  kubectl describe node | grep Allocatable -A10
+  218  kubectl get pods -o wide
+  219  kubectl describe node muela3 | less
+  220  ls
+  221  vim gpu-test.yaml 
+  222  kubectl apply -f gpu-test.yaml 
+  223  kubectl get pods -o wide
+  224  kubectl describe node muela3
+  225  history
+  226  kubectl get pv,pvc
+  227  ls /
+  228  sudo ls -l /nfsexport/default-llama-models-pvc-pvc-03261291-bfb3-45b7-a663-4b74c4f5964b/
+  229  grep -i nfs 8
+  230  grep -i nfs *
+  231  vim nfs-provisioner-pvc-test.yaml 
+  232  vim llama-deployment.yaml 
+  233  kubectl get pvcd
+  234  kubectl get pvc
+  235  vim llama-deployment.yaml 
+  236  history
+  237  sudo ls -l /nfsexport/default-llama-models-pvc-pvc-03261291-bfb3-45b7-a663-4b74c4f5964b/
+  238  kubectl apply -f llama-deployment.yaml 
+  239  vim llama-deployment.yaml 
+  240  kubectl apply -f llama-deployment.yaml 
+  241  kubectl get pods -o wide
+  242  nvtop
+  243  kubectl scale deploy llama-server --replicas=6
+  244  kubectl get pods -o wide
+  245  kubectl describe pod llama-server-77d5bfc55b-q9qrl 
+  246  kubectl describe node muela3
+  247  vim llama-deployment.yaml 
+  248  kubectl scale deployment llama-server --replicas=1
+  249  kubectl describe node muela3 | less
+  250  ls
+  251  vim nvidia-device-plugin-config.yaml 
+  252  kubectl apply -f nvidia-device-plugin-config.yaml 
+  253  sleep 60
+  254  kubectl describe node muela3
+  255  vim nvidia-device-plugin-config.yaml 
+  256  kubectl apply -f nvidia-device-plugin-config.yaml 
+  257  kubectl edit clusterpolicies.nvidia.com 
+  258  sleep 50
+  259  kubectl describe node muela3
+  260  cat nvidia-device-plugin-config.yaml 
+  261  vim significantly-different.yaml
+  262  kubectl apply -f significantly-different.yaml 
+  263  kubectl patch clusterpolicy cluster-policy   --type merge   -p '{
+    "spec": {
+      "devicePlugin": {
+        "config": {
+          "name": "nvidia-device-plugin-config2",
+          "default": "any"
+        }
+      }
+    }
+  }'
+  264  kubectl describe node muela3
+  265  kubectl get pods
+  266  kubectl rollout restart daemonset/nvidia-device-plugin-daemonset   -n nvidia-gpu-operator
+  267  kubectl rollout status daemonset/nvidia-device-plugin-daemonset   -n nvidia-gpu-operator
+  268  kubectl describe node muela3
+  269  kubectl get clusterpolicy -o yaml
+  270  cat nvidia-device-plugin-config.yaml 
+  271  ls -lrt
+  272  vim significantly-different.yaml 
+  273  kubectl apply -f significantly-different.yaml 
+  274  kubectl label node muela3   nvidia.com/device-plugin.config=rtx-4070   --overwrite
+  275  kubectl rollout restart daemonset/nvidia-device-plugin-daemonset   -n nvidia-gpu-operator
+  276  kubectl rollout status daemonset/nvidia-device-plugin-daemonset   -n nvidia-gpu-operator
+  277  kubectl rollout restart daemonset/gpu-feature-discovery   -n nvidia-gpu-operator
+  278  kubectl rollout status daemonset/gpu-feature-discovery   -n nvidia-gpu-operator
+  279  kubectl get node muela3   -o jsonpath='{.status.capacity.nvidia\.com/gpu\.shared}{"\n"}'
+  280  cat significantly-different.yaml 
+  281  kubectl describe node muela3
+  282  kubectl get deploy
+  283  kubectl scale deploy llama-server --replicas=7
+  284  kubectl get pods
+  285  nvtop
+  286  cat llama-server-test.sh 
+  287  kubectl run llama-cli --rm -it --image=curlimages/curl:8.7.1 --restart=Never --   sh -c '
+    curl -s -X POST http://llama-service:8080/completion \
+      -H "Content-Type: application/json" \
+      -d "{\"prompt\":\"Say hello from Kubernetes and mention GPUs.\",\"n_predict\":64}" |
+      sed "s/\\n/\n/g" | head -n 10
+
+
+  288  ./llama-server-test.sh 
+  289  kubectl describe node muela1 | less
+  290  #podman volume create open-webui
+  291  #podman run -d --name open-webui --network=host -v open-webui:/app/backend/data -e OPENAI_API_BASE_URL="http://127.0.0.1:8000/v1: -e OPENAI_API_KEY="dummy" ghcr.io/open-webui/open-webui:main
+  292  ls *pvc*
+  293  cp llama-models-pvc.yaml openwebui-pvc.yaml
+  294  vim openwebui-pvc.yaml 
+  295  kubectl apply -f openwebui-pvc.yaml 
+  296  kubectl get pvc
+  297  cp llama-deployment.yaml openwebui-deployment.yaml
+  298  vim openwebui-deployment.yaml 
+  299  kubectl apply -f openwebui-deployment.yaml 
+  300  kubectl get pods
+  301  #podman run -d --name open-webui --network=host -v open-webui:/app/backend/data -e OPENAI_API_BASE_URL="http://127.0.0.1:8000/v1: -e OPENAI_API_KEY="dummy" ghcr.io/open-webui/open-webui:main
+  302  kubectl create cm -h | less
+  303  #kubectl create cm openwebui-cm --from-literal=OPENAI_API_BASE_URL="http://
+  304  kubectl get svc
+  305  kubectl create cm openwebui-cm --from-literal=OPENAI_API_BASE_URL="http://llama-service:8080/v1" --from-literal=OPENAI_API_KEY=dummy
+  306  kubectl set env -h | less
+  307  kubectl set env --from=configmap/openwebui-cmd deploy/llama-server
+  308  kubectl set env --from=configmap/openwebui-cm deploy/llama-server
+  309  kubectl get deploy llama-server -o yaml | less
+  310  kubectl edit deploy llama-server 
+  311  #kubectl set env --from=configmap/openwebui-cm deploy/o
+  312  kubectl get deploy
+  313  kubectl set env --from=configmap/openwebui-cm deploy/openwebui-deploy
+  314  history
+  315  kubectl get all --selector app=openwebui-deploy
+  316  kubectl get all 
+  317  history
+  318  kubectl kustomize https://github.com/nginxinc/nginx-gateway-fabric/config/crd/gateway-api/standard?ref=2.6.7 | kubectl apply -f -
+  319  kubectl kustomize https://github.com/nginxinc/nginx-gateway-fabric/config/crd/gateway-api/standard?ref=v2.6.7 | kubectl apply -f -
+  320  helm install ngf oci://ghcr.io/nginxinc/charts/nginx-gateway-fabric --create-namespace -n nginx-gateway --set service.type=NodePort
+  321  kubectl get all -n nginx-gateway 
+  322  kubectl get gc
+  323  kubectl edit -n nginx-gateway svc ngf-nginx-gateway-fabric 
+  324  kubectl get deploy,svc,pods
+  325  vim http-routing.yaml 
+  326  kubectl apply -f http-routing.yaml
+  327  kubectl get svc -n nginx-gateway 
+  328  sudo vim /etc/hosts
+  329  nc http://whatever.com:32080
+  330  nc http://whatever.com 32080
+  331  ping whatever.com
+  332  kubectl get all -n nginx-gateway 
+  333  kubectl describe -n nginx-gateway svc ngf-nginx-gateway-fabric 
+  334  kubectl get gateway -o yaml
+  335  kubectl get httproutes.gateway.networking.k8s.io example-route -o yaml | less
+  336  kubectl get gateway -o yaml
+  337  kubectl get httproutes.gateway.networking.k8s.io example-route -o yaml | less
+  338  kubectl get svc
+  339  kubectl describe svc openwebui-service 
+  340  curl http://10.104.188.223:3000
+  341  kubectl get svc -n nginx-gateway 
+  342  curl 192.168.52.43:32080
+  343  nc 192.169.52.43 32080
+  344  echo $?
+  345  history
+  346  history > /tmp/aug2026
