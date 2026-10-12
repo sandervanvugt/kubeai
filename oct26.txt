@@ -1,0 +1,96 @@
+    1  git clone https://github.com/sandervanvugt/kubeai
+    2  sudo apt install -y git
+    3  git clone https://github.com/sandervanvugt/kubeai
+    4  cd kubeai/
+    5  ./countdown 4
+    6  sudo apt install -y nvtop nvidia-cuda-toolkit
+    7  nvtop
+    8  lspci -k | grep -i nvidia -A4
+    9  sudo apt install -y vim git curl
+   10  cd ..
+   11  history
+   12  cd kubea
+   13  cd kubeai
+   14  ls
+   15  ./setup-container.sh 
+   16  ./setup-kubetools.sh 
+   17  history
+   18  sudo kubeadm init
+   19  history
+   20  mkdir -p $HOME/.kube
+   21  kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+   22  kubectl get all
+   23  kubectl create deploy appone --image=nginx
+   24  kubectl get all
+   25  kubectl describe pod appone-68f76595c7-m82hh 
+   26  kubectl edit node lilayi1 
+   27  kubectl get all
+   28  kubectl get nodes 
+   29  history
+   30  ./countdown 12
+   31  sudo snap install helm --classic
+   32  helm version
+   33  nvidia-smi
+   34  helm repo add nvidia https://nvidia.github.io/gpu-operator
+   35  helm repo update
+   36  kubectl create ns nvidia-gpu-operator
+   37  vim values.yaml 
+   38  helm upgrade --install gpu-operator nvida/gpu-operator --namespace nvidia-gpu-operator -f values.yaml
+   39  helm upgrade --install gpu-operator nvidia/gpu-operator --namespace nvidia-gpu-operator -f values.yaml
+   40  kubectl -n nvidia-gpu-operator get pods
+   41  kubectl -n nvidia-gpu-operator get ds
+   42  kubectl -n nvidia-gpu-operator get deploy
+   43  ls
+   44  vim gpu-test.yaml 
+   45  kubectl apply -f gpu-test.yaml 
+   46  kubectl get pods
+   47  kubectl logs gpu-test
+   48  kubectl logs gpu-test3
+   49  vim gpu-test.yaml 
+   50  kubectl apply -f gpu-test.yaml 
+   51  kubectl get pods
+   52  kubectl get pods -o wide
+   53  kubectl logs gpu-test4
+   54  history
+   55  kubectl describe node lilayi1 | less
+   56  history
+   57  vim gpu-test.yaml 
+   58  kubectl apply -f gpu-test.yaml 
+   59  kubectl get pods
+   60  kubectl describe pod gpu-test5
+   61  nvtop
+   62  kubectl get pods
+   63  kubectl delete pod gpu-test3
+   64  kubectl get pods
+   65  kubectl get pods -n nvidia-gpu-operator 
+   66  ./countdown 12
+   67  kubectl get crds
+   68  kubectl get clusterpolicy
+   69  kubectl edit clusterpolicies.nvidia.com 
+   70  kubectl get pods
+   71  kubectl delete pod gpu-test4
+   72  kubectl delete pod gpu-test4 --time-out=1 --force
+   73  kubectl delete pod gpu-test4 --timeout=1 --force
+   74  kubectl delete pod gpu-test4
+   75  kubectl delete pod gpu-test5
+   76  vim gpu-test.yaml 
+   77  kubectl apply -f gpu-test.yaml 
+   78  kubectl get pods
+   79  kubectl delete gpu-test5
+   80  kubectl delete pod gpu-test5
+   81  vim gpu-test.yaml 
+   82  kubectl apply -f gpu-test.yaml 
+   83  kubectl get pods -o wide
+   84  ls
+   85  vim nvidia-device-plugin-config.yaml 
+   86  grep -i configmap *
+   87  vim timeslice.yaml 
+   88  kubectl apply -f timeslice.yaml 
+   89  kubectl edit clusterpolicies.nvidia.com 
+   90  kubectl get pods
+   91  kubectl delete pod gpu-test5 
+   92  kubectl describe node | grep nvidia.com/gpu
+   93  kubectl describe node lilayi1 
+   94  kubectl describe node lilayi3
+   95  history
+   96  history > /tmp/oct26.txt
