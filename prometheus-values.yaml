@@ -1,4 +1,6 @@
 
+# Minimal Prometheus installation for GenAI lab
+
 alertmanager:
   enabled: false
 
@@ -9,43 +11,54 @@ prometheus-node-exporter:
   enabled: false
 
 kube-state-metrics:
-  enabled: false
+  enabled: true
 
 server:
   persistentVolume:
     enabled: false
-
-  retention: "1d"
+  retention: "2d"
 
   global:
     scrape_interval: 10s
     evaluation_interval: 10s
 
-  service:
-    type: ClusterIP
-
+# Additional scrape configuration for vLLM
 extraScrapeConfigs: |
-  - job_name: vllm
+  - job_name: 'vllm'
     scrape_interval: 10s
     metrics_path: /metrics
+
     kubernetes_sd_configs:
-      - role: endpointslice
+      - role: pod
         namespaces:
           names:
             - genai
+
     relabel_configs:
+      # Only discover Pods with label app=vllm
       - source_labels:
-          - __meta_kubernetes_service_name
+          - __meta_kubernetes_pod_label_app
         action: keep
-        regex: vllm-metrics
+        regex: vllm
+
+      # Only scrape port 8000
       - source_labels:
-          - __meta_kubernetes_endpointslice_port_name
+          - __meta_kubernetes_pod_container_port_number
         action: keep
-        regex: metrics
+        regex: "8000"
+
+      # Only scrape running and ready Pods
+      - source_labels:
+          - __meta_kubernetes_pod_ready
+        action: keep
+        regex: "true"
+
+      # Preserve namespace and Pod labels
       - source_labels:
           - __meta_kubernetes_namespace
         target_label: namespace
+
       - source_labels:
-          - __meta_kubernetes_endpoint_node_name
-        target_label: node
+          - __meta_kubernetes_pod_name
+        target_label: pod
 
