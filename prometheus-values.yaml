@@ -1,0 +1,51 @@
+
+alertmanager:
+  enabled: false
+
+prometheus-pushgateway:
+  enabled: false
+
+prometheus-node-exporter:
+  enabled: false
+
+kube-state-metrics:
+  enabled: false
+
+server:
+  persistentVolume:
+    enabled: false
+
+  retention: "1d"
+
+  global:
+    scrape_interval: 10s
+    evaluation_interval: 10s
+
+  service:
+    type: ClusterIP
+
+extraScrapeConfigs: |
+  - job_name: vllm
+    scrape_interval: 10s
+    metrics_path: /metrics
+    kubernetes_sd_configs:
+      - role: endpointslice
+        namespaces:
+          names:
+            - genai
+    relabel_configs:
+      - source_labels:
+          - __meta_kubernetes_service_name
+        action: keep
+        regex: vllm-metrics
+      - source_labels:
+          - __meta_kubernetes_endpointslice_port_name
+        action: keep
+        regex: metrics
+      - source_labels:
+          - __meta_kubernetes_namespace
+        target_label: namespace
+      - source_labels:
+          - __meta_kubernetes_endpoint_node_name
+        target_label: node
+
