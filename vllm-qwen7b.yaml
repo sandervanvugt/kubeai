@@ -1,0 +1,105 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vllm
+  namespace: genai
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: vllm
+  template:
+    metadata:
+      labels:
+        app: vllm
+    spec:
+      enableServiceLinks: false
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: vllm
+          image: vllm/vllm-openai:v0.11.0
+          args:
+            - --model
+            - Qwen/Qwen2.5-7B-Instruct
+            - --served-model-name
+            - Qwen/Qwen2.5-7B-Instruct
+            - --dtype
+            - half
+            - --max-model-len
+            - '2048'
+            - --gpu-memory-utilization
+            - '0.85'
+            - --max-num-seqs
+            - '4'
+            - --host
+            - 0.0.0.0
+            - --port
+            - '8000'
+          env:
+            - name: HF_HOME
+              value: /models
+            - name: HF_HUB_DISABLE_TELEMETRY
+              value: '1'
+          ports:
+            - name: http
+              containerPort: 8000
+          resources:
+            requests:
+              cpu: '2'
+              memory: 12Gi
+              ephemeral-storage: 20Gi
+              nvidia.com/gpu: '1'
+            limits:
+              cpu: '6'
+              memory: 24Gi
+              ephemeral-storage: 35Gi
+              nvidia.com/gpu: '1'
+          startupProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 10
+            failureThreshold: 120
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 30
+            failureThreshold: 5
+          volumeMounts:
+            - name: models
+              mountPath: /models
+            - name: dshm
+              mountPath: /dev/shm
+      volumes:
+        - name: models
+          emptyDir:
+            sizeLimit: 25Gi
+        - name: dshm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vllm
+  namespace: genai
+  labels:
+    app: vllm
+spec:
+  selector:
+    app: vllm
+  ports:
+    - name: http
+      port: 8000
+      targetPort: http
+  type: ClusterIP
+
