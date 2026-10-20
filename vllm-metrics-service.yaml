@@ -1,0 +1,18 @@
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: vllm-metrics
+  namespace: genai
+  labels:
+    app: vllm-metrics
+spec:
+  clusterIP: None
+  selector:
+    app: vllm
+  ports:
+    - name: metrics
+      port: 8000
+      targetPort: 8000
+      protocol: TCP
+
