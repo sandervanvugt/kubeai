@@ -1,0 +1,23 @@
+
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: vllm
+  namespace: genai
+  labels:
+    release: monitoring
+spec:
+  namespaceSelector:
+    matchNames:
+      - genai
+
+  selector:
+    matchLabels:
+      app: vllm
+
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 10s
+      scrapeTimeout: 5s
+
