@@ -1,3 +1,6 @@
+# CHANGE "localhost" in the curl request to the IP address used by the 
+# vllm service
+
 curl http://localhost:8000/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{
