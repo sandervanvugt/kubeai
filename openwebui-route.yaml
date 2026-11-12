@@ -1,0 +1,21 @@
+
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: openwebui
+  namespace: openwebui
+spec:
+  parentRefs:
+    - name: genai-gateway
+      namespace: genai
+  hostnames:
+    - chat.example.com
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: openwebui
+          port: 80
+
