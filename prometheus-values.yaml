@@ -23,7 +23,7 @@ server:
     scrape_interval: 10s
     evaluation_interval: 10s
 
-  extraScrapeConfigs: |
+extraScrapeConfigs: |
     - job_name: 'vllm'
       scrape_interval: 10s
       metrics_path: /metrics
