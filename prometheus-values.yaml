@@ -23,36 +23,40 @@ server:
     scrape_interval: 10s
     evaluation_interval: 10s
 
-  service:
-    type: NodePort
+# Additional scrape configuration for vLLM
+# This MUST be at the top level.
 
 extraScrapeConfigs: |
-    - job_name: 'vllm'
-      scrape_interval: 10s
-      metrics_path: /metrics
+  - job_name: 'vllm'
+    scrape_interval: 10s
+    metrics_path: /metrics
 
-      kubernetes_sd_configs:
-        - role: pod
-          namespaces:
-            names:
-              - genai
+    kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names:
+            - genai
 
-      relabel_configs:
-        - source_labels:
-            - __meta_kubernetes_pod_label_app
-          action: keep
-          regex: vllm
+    relabel_configs:
+      # Discover only Pods with app=vllm
+      - source_labels:
+          - __meta_kubernetes_pod_label_app
+        action: keep
+        regex: vllm
 
-        - source_labels:
-            - __meta_kubernetes_pod_container_port_number
-          action: keep
-          regex: "8000"
+      # Scrape only port 8000
+      - source_labels:
+          - __meta_kubernetes_pod_container_port_number
+        action: keep
+        regex: "8000"
 
-        - source_labels:
-            - __meta_kubernetes_namespace
-          target_label: namespace
+      # Add Kubernetes namespace label
+      - source_labels:
+          - __meta_kubernetes_namespace
+        target_label: namespace
 
-        - source_labels:
-            - __meta_kubernetes_pod_name
-          target_label: pod
+      # Add Kubernetes Pod label
+      - source_labels:
+          - __meta_kubernetes_pod_name
+        target_label: pod
 
