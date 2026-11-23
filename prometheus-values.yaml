@@ -16,49 +16,40 @@ kube-state-metrics:
 server:
   persistentVolume:
     enabled: false
+
   retention: "2d"
 
   global:
     scrape_interval: 10s
     evaluation_interval: 10s
 
-# Additional scrape configuration for vLLM
-extraScrapeConfigs: |
-  - job_name: 'vllm'
-    scrape_interval: 10s
-    metrics_path: /metrics
+  extraScrapeConfigs: |
+    - job_name: 'vllm'
+      scrape_interval: 10s
+      metrics_path: /metrics
 
-    kubernetes_sd_configs:
-      - role: pod
-        namespaces:
-          names:
-            - genai
+      kubernetes_sd_configs:
+        - role: pod
+          namespaces:
+            names:
+              - genai
 
-    relabel_configs:
-      # Only discover Pods with label app=vllm
-      - source_labels:
-          - __meta_kubernetes_pod_label_app
-        action: keep
-        regex: vllm
+      relabel_configs:
+        - source_labels:
+            - __meta_kubernetes_pod_label_app
+          action: keep
+          regex: vllm
 
-      # Only scrape port 8000
-      - source_labels:
-          - __meta_kubernetes_pod_container_port_number
-        action: keep
-        regex: "8000"
+        - source_labels:
+            - __meta_kubernetes_pod_container_port_number
+          action: keep
+          regex: "8000"
 
-      # Only scrape running and ready Pods
-      - source_labels:
-          - __meta_kubernetes_pod_ready
-        action: keep
-        regex: "true"
+        - source_labels:
+            - __meta_kubernetes_namespace
+          target_label: namespace
 
-      # Preserve namespace and Pod labels
-      - source_labels:
-          - __meta_kubernetes_namespace
-        target_label: namespace
-
-      - source_labels:
-          - __meta_kubernetes_pod_name
-        target_label: pod
+        - source_labels:
+            - __meta_kubernetes_pod_name
+          target_label: pod
 
