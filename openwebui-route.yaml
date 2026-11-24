@@ -1,4 +1,3 @@
-
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
@@ -6,7 +5,7 @@ metadata:
   namespace: openwebui
 spec:
   parentRefs:
-    - name: genai-gateway
+    - name: vllm-gateway
       namespace: genai
   hostnames:
     - chat.example.com
@@ -18,4 +17,3 @@ spec:
       backendRefs:
         - name: openwebui
           port: 80
-
